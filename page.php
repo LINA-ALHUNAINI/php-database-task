@@ -21,8 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $age = $_POST['age'];
     
     // إدخال البيانات في الجدول (حالة افتراضية 0)
-    $sql = "INSERT INTO stu (name, age, status) VALUES ('$name', '$age', 0)";
-    if ($conn->query($sql) === TRUE) {
+   $stmt = $conn->prepare("INSERT INTO stu (name, age, status) VALUES (?, ?, 0)");
+$stmt->bind_param("si", $name, $age);
+if ($stmt->execute()) {
+
         // تحديث الصفحة عشان تظهر البيانات الجديدة بالجدول تحت
         header("Location: page.php"); 
         exit();
